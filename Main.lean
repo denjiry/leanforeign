@@ -1,4 +1,4 @@
-import Main.S
+import LeanForeign.S
 
 def main : IO Unit := do
   IO.println (mkS 10 20 "hello").addXY
