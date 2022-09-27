@@ -18,6 +18,10 @@ open Lean Elab Command Term Meta
 
 elab "#findCElab " c:command : command => do
   let macroRes ← liftMacroM <| expandMacroImpl? (←getEnv) c
+  let _a ← liftIO do
+      IO.println "a"
+      let _b := 12
+      pure Lean.Syntax.missing
   match macroRes with
   | some (name, _) => logInfo s!"Next step is a macro: {name.toString}"
   | none =>
