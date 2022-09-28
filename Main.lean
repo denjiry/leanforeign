@@ -18,10 +18,12 @@ open Lean Elab Command Term Meta
 
 elab "#findCElab " c:command : command => do
   let macroRes ← liftMacroM <| expandMacroImpl? (←getEnv) c
+  -- because of MonadLift, IO monad also available
+  let _c ← (pure: _ → IO _) Lean.Syntax.missing
   let _a ← liftIO do
       IO.println "a"
       let _b := 12
-      pure Lean.Syntax.missing
+      (pure: _) Lean.Syntax.missing
   match macroRes with
   | some (name, _) => logInfo s!"Next step is a macro: {name.toString}"
   | none =>
@@ -33,3 +35,15 @@ elab "#findCElab " c:command : command => do
 
 #findCElab def lala := 12
 #findCElab example : 1 = 1 := rfl
+
+def divide (x :Float ) (y :Float):ExceptT String Id Float :=
+  if y ==0 then
+    throw "can't divide by zero"
+  else
+    pure (x /y)
+#eval divide 8 0
+
+def lt (x : Except String Float):
+  StateT Nat (Except String) Float := (monadLift : _) x
+
+#print lt
