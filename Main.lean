@@ -47,3 +47,16 @@ def lt (x : Except String Float):
   StateT Nat (Except String) Float := (monadLift : _) x
 
 #print lt
+
+syntax (name := myterm1) "myterm 1" : term
+
+def mytermValues := [1,3]
+
+@[termElab myterm1]
+def myTerm1Impl : TermElab := fun stx type? =>
+  mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 0]
+#eval myterm 1
+
+elab "myterm 2" : term => do
+  mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 1]
+#eval myterm 2
