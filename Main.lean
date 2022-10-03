@@ -57,6 +57,16 @@ def myTerm1Impl : TermElab := fun stx type? =>
   mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 0]
 #eval myterm 1
 
+def sss := "a ∧ f b"
 elab "myterm 2" : term => do
+  let env ← getEnv
+  let _a ← (pure:_ → IO _) "a"
+  let parsedSyntax ← match Lean.Parser.runParserCategory env `term sss with
+                      | Except.ok stx => pure stx
+                      | Except.error errmsg => throwError errmsg
+  logInfo s!"{parsedSyntax}"
   mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 1]
 #eval myterm 2
+
+#check `(a ∧ f b)
+#check `(sss)
