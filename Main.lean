@@ -65,8 +65,12 @@ elab "myterm 2" : term => do
                       | Except.ok stx => pure stx
                       | Except.error errmsg => throwError errmsg
   logInfo s!"{parsedSyntax}"
-  mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 1]
+  let prop ← elabTerm parsedSyntax none-- (mkConst `Lean.Prop)
+  logInfo s!"hi:{prop}"
+  pure prop
+  -- logInfo s!"{prop}"
+  -- mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 1]
 #eval myterm 2
 
-#check `(a ∧ f b)
-#check `(sss)
+-- #check `(a ∧ f b)
+-- #check `(sss)
