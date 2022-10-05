@@ -74,3 +74,6 @@ elab "myterm 2" : term => do
 
 -- #check `(a ∧ f b)
 -- #check `(sss)
+theorem haha : myterm 2 := by
+  intros
+  cases
