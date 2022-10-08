@@ -57,7 +57,7 @@ def myTerm1Impl : TermElab := fun stx type? =>
   mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 0]
 #eval myterm 1
 
-def sss := "a ∧ f b"
+def sss := "∀a b, a → b → a ∧ b"
 elab "myterm 2" : term => do
   let env ← getEnv
   let _a ← (pure:_ → IO _) "a"
@@ -70,10 +70,5 @@ elab "myterm 2" : term => do
   pure prop
   -- logInfo s!"{prop}"
   -- mkAppM ``List.get! #[mkConst ``mytermValues, mkNatLit 1]
-#eval myterm 2
 
--- #check `(a ∧ f b)
--- #check `(sss)
-theorem haha : myterm 2 := by
-  intros
-  cases
+def hahna: myterm 2 := fun {a b : Prop}(ha:a) (hb:b) => And.intro ha hb -- (⟨ha,hb⟩:a∧b)
